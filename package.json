@@ -9,7 +9,7 @@
         "build:scripts": "node scripts/build-scripts.js",
         "build:scss": "node scripts/build-scss.js",
         "clean": "node scripts/clean.js",
-        "start": "npm run build && node scripts/start.js",
+        "start": "npm run build && node server.js",
         "start:debug": "npm run build && node scripts/start-debug.js"
     },
     "description": "An HTML landing page template built with Bootstrap",
@@ -36,7 +36,10 @@
         "url": "https://github.com/StartBootstrap/startbootstrap-landing-page.git"
     },
     "dependencies": {
-        "bootstrap": "5.2.3"
+        "bootstrap": "5.2.3",
+        "express": "^4.17.1",
+        "body-parser": "^1.19.0",
+        "mysql2": "^2.2.5"
     },
     "devDependencies": {
         "autoprefixer": "10.4.14",
