@@ -4,7 +4,7 @@ const mysql = require('mysql2');
 const path = require('path');
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;  // Usa el puerto proporcionado por Railway o 3000
 
 // Configuración de la base de datos
 const db = mysql.createConnection({
@@ -31,14 +31,14 @@ app.use(express.static(path.join(__dirname, 'dist')));
 
 // Ruta para manejar el formulario de contacto
 app.post('/api/leads', (req, res) => {
-    const { email, phone, application_form, comentario } = req.body;
+    const { phone } = req.body;
 
-    if (!email || !phone) {
-        return res.status(400).json({ error: 'El correo y el teléfono son requeridos' });
+    if (!phone || !/^\d{9}$/.test(phone)) {
+        return res.status(400).json({ error: 'El teléfono es requerido y debe tener 9 dígitos' });
     }
 
-    const query = 'INSERT INTO leads (email, phone, application_form, comentario) VALUES (?, ?, ?, ?)';
-    db.query(query, [email, phone, application_form, comentario], (err, result) => {
+    const query = 'INSERT INTO leads (phone) VALUES (?)';
+    db.query(query, [phone], (err, result) => {
         if (err) {
             console.error('Error al guardar el lead en la base de datos:', err);
             return res.status(500).json({ error: 'Error al guardar el lead en la base de datos' });

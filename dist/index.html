@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <title>Landing Page - Start Bootstrap Theme</title>
+        <title>CQ juridico</title>
         <!-- Favicon-->
         <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
         <!-- Bootstrap icons-->
@@ -20,7 +20,7 @@
         <nav class="navbar navbar-light bg-light static-top">
             <div class="container">
                 <a class="navbar-brand" href="#!">CQ jurídico</a>
-                <a class="btn btn-primary" href="#signup">Contáctenme</a>
+                <a class="btn btn-primary" href="#signup">Escribenos</a>
             </div>
         </nav>
         <!-- Masthead-->
@@ -33,17 +33,14 @@
                             <h1 class="mb-5">Quiero cambiarme el nombre</h1>
                             <!-- Signup form-->
                             <form class="form-subscribe" id="contactForm">
-                                <div class="row">
-                                    <div class="col">
-                                        <input class="form-control form-control-lg" id="emailAddress" type="email" placeholder="Correo electrónico" required />
-                                        <div class="invalid-feedback text-white">Un correo es requerido</div>
-                                        <div class="invalid-feedback text-white">El correo registrado no es válido</div>
+                                <div class="row mb-3 justify-content-center">
+                                    <div class="col-md-8">
+                                        <input class="form-control form-control-lg" id="phoneNumber" type="tel" placeholder="Teléfono" pattern="\d{9}" required />
+                                        <div class="invalid-feedback text-white">El teléfono es requerido y debe tener 9 dígitos</div>
                                     </div>
-                                    <div class="col">
-                                        <input class="form-control form-control-lg" id="phoneNumber" type="tel" placeholder="Número de teléfono" required />
-                                        <div class="invalid-feedback text-white">El teléfono es requerido</div>
+                                    <div class="col-auto">
+                                        <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Consulta gratuita</button>
                                     </div>
-                                    <div class="col-auto"><button class="btn btn-primary btn-lg" id="submitButton" type="submit">Iniciar proceso</button></div>
                                 </div>
                                 <div class="d-none" id="submitSuccessMessage">
                                     <div class="text-center mb-3">
@@ -63,36 +60,36 @@
         </header>
 
         <script>
-            document.getElementById('contactForm').addEventListener('submit', function(event) {
-                event.preventDefault();
-                const email = document.getElementById('emailAddress').value;
-                const phone = document.getElementById('phoneNumber').value;
+            document.addEventListener('DOMContentLoaded', function() {
+                document.getElementById('contactForm').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const phone = document.getElementById('phoneNumber').value;
 
-                fetch('/api/leads', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({
-                        email: email,
-                        phone: phone,
-                        application_form: '', // Puedes agregar más campos aquí si es necesario
-                        comentario: '' // Puedes agregar más campos aquí si es necesario
+                    fetch('/api/leads', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            phone: phone,
+                            application_form: '', // Puedes agregar más campos aquí si es necesario
+                            comentario: '' // Puedes agregar más campos aquí si es necesario
+                        })
                     })
-                })
-                .then(response => response.json())
-                .then(data => {
-                    if (data.success) {
-                        document.getElementById('submitSuccessMessage').classList.remove('d-none');
-                        document.getElementById('submitErrorMessage').classList.add('d-none');
-                    } else {
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            document.getElementById('submitSuccessMessage').classList.remove('d-none');
+                            document.getElementById('submitErrorMessage').classList.add('d-none');
+                        } else {
+                            document.getElementById('submitSuccessMessage').classList.add('d-none');
+                            document.getElementById('submitErrorMessage').classList.remove('d-none');
+                        }
+                    })
+                    .catch(error => {
                         document.getElementById('submitSuccessMessage').classList.add('d-none');
                         document.getElementById('submitErrorMessage').classList.remove('d-none');
-                    }
-                })
-                .catch(error => {
-                    document.getElementById('submitSuccessMessage').classList.add('d-none');
-                    document.getElementById('submitErrorMessage').classList.remove('d-none');
+                    });
                 });
             });
         </script>
@@ -208,13 +205,25 @@
                         <!-- to get an API token!-->
                         <form class="form-subscribe" id="contactFormFooter" data-sb-form-api-token="API_TOKEN">
                             <!-- Email address input-->
-                            <div class="row">
-                                <div class="col">
+                            <div class="row mb-3 justify-content-center">
+                                <div class="col-md-8">
                                     <input class="form-control form-control-lg" id="emailAddressBelow" type="email" placeholder="ejemplo@gmail.com" data-sb-validations="required,email" />
                                     <div class="invalid-feedback text-white" data-sb-feedback="emailAddressBelow:required">Un correo es requerido</div>
                                     <div class="invalid-feedback text-white" data-sb-feedback="emailAddressBelow:email">Correo no válido</div>
                                 </div>
-                                <div class="col-auto"><button class="btn btn-primary btn-lg disabled" id="submitButton" type="submit">Enviar</button></div>
+                            </div>
+                            <!-- Comments input-->
+                            <div class="row mb-3 justify-content-center">
+                                <div class="col-md-8">
+                                    <textarea class="form-control form-control-lg" id="commentsBelow" placeholder="Escribe tus comentarios o dudas aquí" rows="4" data-sb-validations="required"></textarea>
+                                    <div class="invalid-feedback text-white" data-sb-feedback="commentsBelow:required">Un comentario es requerido</div>
+                                </div>
+                            </div>
+                            <!-- Submit button-->
+                            <div class="row justify-content-center">
+                                <div class="col-auto">
+                                    <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Enviar</button>
+                                </div>
                             </div>
                             <!-- Submit success message-->
                             <!---->
