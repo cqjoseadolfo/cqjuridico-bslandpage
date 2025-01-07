@@ -39,17 +39,15 @@
                                         <div class="invalid-feedback text-white">El teléfono es requerido y debe tener 9 dígitos</div>
                                     </div>
                                     <div class="col-auto">
-                                        <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Consulta gratuita</button>
+                                        <button class="btn btn-primary btn-lg" id="submitButton1" type="submit">Consulta gratuita</button>
                                     </div>
                                 </div>
-                                <div class="d-none" id="submitSuccessMessage">
+                                <div class="d-none" id="submitSuccessMessage1">
                                     <div class="text-center mb-3">
                                         <div class="fw-bolder">Tu cambio de nombre está en proceso</div>
-                                        <!-- <p>To activate this form, sign up at</p> -->
-                                        <!-- <a class="text-white" href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>-->
                                     </div>
                                 </div>
-                                <div class="d-none" id="submitErrorMessage">
+                                <div class="d-none" id="submitErrorMessage1">
                                     <div class="text-center text-danger mb-3">Error sending message!</div>
                                 </div>
                             </form>
@@ -61,6 +59,7 @@
 
         <script>
             document.addEventListener('DOMContentLoaded', function() {
+                // Manejar el envío del formulario de contacto principal
                 document.getElementById('contactForm').addEventListener('submit', function(event) {
                     event.preventDefault();
                     const phone = document.getElementById('phoneNumber').value;
@@ -78,17 +77,69 @@
                     })
                     .then(response => response.json())
                     .then(data => {
+                        const successMessage = document.getElementById('submitSuccessMessage1');
+                        const errorMessage = document.getElementById('submitErrorMessage1');
                         if (data.success) {
-                            document.getElementById('submitSuccessMessage').classList.remove('d-none');
-                            document.getElementById('submitErrorMessage').classList.add('d-none');
+                            if (successMessage && errorMessage) {
+                                successMessage.classList.remove('d-none');
+                                errorMessage.classList.add('d-none');
+                            }
                         } else {
-                            document.getElementById('submitSuccessMessage').classList.add('d-none');
-                            document.getElementById('submitErrorMessage').classList.remove('d-none');
+                            if (successMessage && errorMessage) {
+                                successMessage.classList.add('d-none');
+                                errorMessage.classList.remove('d-none');
+                            }
                         }
                     })
                     .catch(error => {
-                        document.getElementById('submitSuccessMessage').classList.add('d-none');
-                        document.getElementById('submitErrorMessage').classList.remove('d-none');
+                        const successMessage = document.getElementById('submitSuccessMessage1');
+                        const errorMessage = document.getElementById('submitErrorMessage1');
+                        if (successMessage && errorMessage) {
+                            successMessage.classList.add('d-none');
+                            errorMessage.classList.remove('d-none');
+                        }
+                    });
+                });
+
+                // Manejar el envío del formulario de contacto en el pie de página
+                document.getElementById('contactFormFooter').addEventListener('submit', function(event) {
+                    event.preventDefault();
+                    const email = document.getElementById('emailAddressBelow').value;
+                    const comentario = document.getElementById('commentsBelow').value;
+
+                    fetch('/api/leads', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            email: email,
+                            comentario: comentario
+                        })
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        const successMessage = document.getElementById('submitSuccessMessage2');
+                        const errorMessage = document.getElementById('submitErrorMessage2');
+                        if (data.success) {
+                            if (successMessage && errorMessage) {
+                                successMessage.classList.remove('d-none');
+                                errorMessage.classList.add('d-none');
+                            }
+                        } else {
+                            if (successMessage && errorMessage) {
+                                successMessage.classList.add('d-none');
+                                errorMessage.classList.remove('d-none');
+                            }
+                        }
+                    })
+                    .catch(error => {
+                        const successMessage = document.getElementById('submitSuccessMessage2');
+                        const errorMessage = document.getElementById('submitErrorMessage2');
+                        if (successMessage && errorMessage) {
+                            successMessage.classList.add('d-none');
+                            errorMessage.classList.remove('d-none');
+                        }
                     });
                 });
             });
@@ -190,21 +241,13 @@
             </div>
         </section>
         <!-- Call to Action-->
+        <!-- Segundo formulario -->
         <section class="call-to-action text-white text-center" id="signup">
             <div class="container position-relative">
                 <div class="row justify-content-center">
                     <div class="col-xl-6">
                         <h2 class="mb-4">¿Listo para que te llamen diferente?</h2>
-                        <!-- Signup form-->
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- * * SB Forms Contact Form * *-->
-                        <!-- * * * * * * * * * * * * * * *-->
-                        <!-- This form is pre-integrated with SB Forms.-->
-                        <!-- To make this form functional, sign up at-->
-                        <!-- https://startbootstrap.com/solution/contact-forms-->
-                        <!-- to get an API token!-->
-                        <form class="form-subscribe" id="contactFormFooter" data-sb-form-api-token="API_TOKEN">
-                            <!-- Email address input-->
+                        <form class="form-subscribe" id="contactFormFooter">
                             <div class="row mb-3 justify-content-center">
                                 <div class="col-md-8">
                                     <input class="form-control form-control-lg" id="emailAddressBelow" type="email" placeholder="ejemplo@gmail.com" data-sb-validations="required,email" />
@@ -212,35 +255,25 @@
                                     <div class="invalid-feedback text-white" data-sb-feedback="emailAddressBelow:email">Correo no válido</div>
                                 </div>
                             </div>
-                            <!-- Comments input-->
                             <div class="row mb-3 justify-content-center">
                                 <div class="col-md-8">
                                     <textarea class="form-control form-control-lg" id="commentsBelow" placeholder="Escribe tus comentarios o dudas aquí" rows="4" data-sb-validations="required"></textarea>
                                     <div class="invalid-feedback text-white" data-sb-feedback="commentsBelow:required">Un comentario es requerido</div>
                                 </div>
                             </div>
-                            <!-- Submit button-->
                             <div class="row justify-content-center">
                                 <div class="col-auto">
-                                    <button class="btn btn-primary btn-lg" id="submitButton" type="submit">Enviar</button>
+                                    <button class="btn btn-primary btn-lg" id="submitButton2" type="submit">Enviar</button>
                                 </div>
                             </div>
-                            <!-- Submit success message-->
-                            <!---->
-                            <!-- This is what your users will see when the form-->
-                            <!-- has successfully submitted-->
-                            <div class="d-none" id="submitSuccessMessage">
+                            <div class="d-none" id="submitSuccessMessage2">
                                 <div class="text-center mb-3">
                                     <div class="fw-bolder">Datos enviados!</div>
-                                    <p>To activate this form, sign up at</p>
-                                    <a class="text-white" href="https://startbootstrap.com/solution/contact-forms">https://startbootstrap.com/solution/contact-forms</a>
                                 </div>
                             </div>
-                            <!-- Submit error message-->
-                            <!---->
-                            <!-- This is what your users will see when there is-->
-                            <!-- an error submitting the form-->
-                            <div class="d-none" id="submitErrorMessage"><div class="text-center text-danger mb-3">Error sending message!</div></div>
+                            <div class="d-none" id="submitErrorMessage2">
+                                <div class="text-center text-danger mb-3">Error sending message!</div>
+                            </div>
                         </form>
                     </div>
                 </div>
